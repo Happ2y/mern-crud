@@ -12,7 +12,7 @@ import CreateUser from './components/create-user.component';
 class App extends Component {
 	render(){
 		return (
-			<div className='container-fluid'>
+			<div className='container'>
 				<Router>
 					<Navbar />
 					
