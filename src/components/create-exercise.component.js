@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
 
-class CreateExercise extends Component{
-    constructor (props){
+class CreateExercise extends Component {
+    constructor(props) {
         super(props);
 
         this.onChangeUsername = this.onChangeUsername.bind(this);
@@ -13,60 +14,70 @@ class CreateExercise extends Component{
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
-            username : "",
-            description : "",
-            duration : 0,
-            date : new Date(),
-            users : []
+            username: "",
+            description: "",
+            duration: 0,
+            date: new Date(),
+            users: []
         }
     }
 
-    componentDidMount (){
+    componentDidMount() {
+        axios.get('http://localhost:5000/users/')
+            .then(result => {
+                if (result.data.length > 0){
+                    this.setState({
+                        users : result.data.map(user => user.username),
+                        username : result.data[0].username
+                    })
+                }
+            })
+            .catch(err => console.log(err))
+    }
+
+    onChangeUsername(e) {
         this.setState({
-            users : ["Swaraj Kumar", "Happy Kumar"],
-            username : "Swaraj Kumar",
+            username: e.target.value
         })
     }
 
-    onChangeUsername (e){
+    onChangeDescription(e) {
         this.setState({
-            username : e.target.value
+            description: e.target.value
         })
     }
 
-    onChangeDescription (e){
+    onChangeDuration(e) {
         this.setState({
-            description : e.target.value
+            duration: e.target.value
         })
     }
 
-    onChangeDuration (e){
+    onChangeDate(date) {
         this.setState({
-            duration : e.target.value
+            date: date
         })
     }
 
-    onChangeDate (date){
-        this.setState({
-            date : date
-        })
-    }
-
-    onSubmit (e){
+    onSubmit(e) {
         e.preventDefault();
 
         const exercise = {
-            username : this.state.username,
-            description : this.state.description,
-            duration : this.state.duration,
-            date : this.state.date
+            username: this.state.username,
+            description: this.state.description,
+            duration: this.state.duration,
+            date: this.state.date
         }
 
-        console.log(exercise);
+        axios.post('http://localhost:5000/exercises/add', exercise)
+            .then(result => console.log(result.data))
+            .catch(err => console.log(err))
+
+
         window.location = "/";
     }
 
-    render(){
+    render() {
         return (
             <div>
                 <h3>Create New Exercise Log</h3>
@@ -85,23 +96,23 @@ class CreateExercise extends Component{
                     </div>
                     <div className="form-group">
                         <label>Description:</label>
-                        <input type="text" className="form-control" value={this.state.description} onChange={this.onChangeDescription} required/>
+                        <input type="text" className="form-control" value={this.state.description} onChange={this.onChangeDescription} required />
                     </div>
                     <div className="form-group">
                         <label>Duration (in minutes):</label>
-                        <input type="text" className="form-control" value={this.state.duration} onChange={this.onChangeDuration} required/>
+                        <input type="text" className="form-control" value={this.state.duration} onChange={this.onChangeDuration} required />
                     </div>
                     <div className="form-group">
                         <label>Date:</label>
-                        <DatePicker selected={this.state.date} onChange={this.onChangeDate}/>
+                        <DatePicker selected={this.state.date} onChange={this.onChangeDate} />
                     </div>
                     <div className="form-group">
-                        <input type="submit" value="Create Exercise Log" className="btn btn-primary"/>
+                        <input type="submit" value="Create Exercise Log" className="btn btn-primary" />
                     </div>
                 </form>
             </div>
         );
     }
 }
- 
+
 export default CreateExercise;
