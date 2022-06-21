@@ -19,9 +19,6 @@ class Navbar extends Component {
                                 <Link className="nav-link" to="/create">Create Exercise Log</Link>
                             </li>
                             <li className="nav-item">
-                                <Link className="nav-link" to="/edit">Edit Exercise</Link>
-                            </li>
-                            <li className="nav-item">
                                 <Link className="nav-link" to="/user">Create User</Link>
                             </li>
                         </ul>

@@ -18,9 +18,9 @@ class App extends Component {
 					
 					<Routes>
 						<Route exact path='/' element={< ExerciseList />} ></Route>
-						<Route exact path='/edit' element={< EditExercise />}></Route>
-						<Route exact path='/create' element={< CreateExercise />}></Route>
-						<Route exact path='/user' element={< CreateUser />}></Route>
+						<Route path='/create' element={< CreateExercise />}></Route>
+						<Route path='/edit/:id' element={< EditExercise />}></Route>
+						<Route path='/user' element={< CreateUser />}></Route>
 					</Routes>
 				</Router>
 			</div>
